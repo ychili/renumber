@@ -1,0 +1,170 @@
+.TH RENUMBER 1 "CURRENT_DATE" "VERSION_NUMBER"
+
+.SH NAME
+.PP
+renumber \- rename files with consecutive numbering scheme
+
+.SH SYNOPSIS
+.HP 9
+.B renumber
+.RB [ -h " | " -m " | " -V ]
+.RB [ -v ]
+.RB [ -n ]
+.RB [ -f ]
+.RB [ -c ]
+.RB [ -l ]
+.RB [ -r ]
+.RB [ -s " \f[I]num\f[R]]"
+.RB [ -U ]
+.I template
+.IR files " [" files " ...]"
+
+.SH DESCRIPTION
+.PP
+.B renumber
+renames
+.I files
+according to
+.I template
+using a consecutive numbering scheme.
+By default, filenames are sorted before numbering.
+
+.SS Template string syntax
+.PP
+.I template
+is a character string that contains at least one number format directive.
+The directive will be substituted with that file's number
+in the sorted sequence.
+.PP
+Number formats (at least 1 required):
+.TP
+.B %d
+Decimal:
+for example [1, 2, ... 9, 10, 11, ...] will be substituted
+.TP
+.B %x
+Hexadecimal lower case:
+for example [1, 2, ... 9, a, b, ...] will be substituted
+.TP
+.B %X
+Hexadecimal upper case:
+for example [1, 2, ... 9, A, B, ...] will be substituted
+.PP
+The above number format directives also accept a width modifier between
+the percent sign and the directive, like so:
+\f[B]%3d\f[R].
+The number will be padded with zeroes to this width.
+.TP
+.B %a
+Alphabetic lower case:
+for example [a, b, ... z, aa, ab ...] will be substituted
+.TP
+.B %A
+Alphabetic upper case:
+for example [A, B, ... Z, AA, AB ...] will be substituted
+.PP
+String formats (optional):
+.TP
+.B %f
+Substitute old file name:
+base name is substituted, that is,
+the filepath with no leading path components
+.TP
+.B %bf
+Substitute old file name stem:
+same as
+.B %f
+with the file extension removed
+.TP
+.B %xf
+Substitute old file name suffix:
+same as
+.B %f
+but file extension only
+.PP
+Escape sequence:
+.TP
+.B %%
+Literal '%'
+.PP
+All other characters in
+.I template
+will be taken as literal.
+
+.SH OPTIONS
+
+.TP
+.BR \-h ", " \-\-help
+Show help message for the options and exit.
+.TP
+.BR \-m ", " \-\-man
+Manual:
+Show help message for formatting the
+.I template
+and exit.
+.TP
+.BR \-V ", " \-\-version
+Show version number and exit.
+.TP
+.BR \-v ", " \-\-verbose
+Verbose:
+Print names of files successfully renamed.
+.TP
+.BR \-n ", " \-\-nono
+No action:
+Print names of files to be renamed, but don't rename them.
+.TP
+.BR \-f ", " \-\-force
+Over write:
+Allow existing files to be over-written.
+.TP
+.BR \-c ", " \-\-caseful
+Caseful sort:
+Consider letter case when sorting.
+Compare with the default which is caseless sorting.
+Remember, in ASCII sorting order
+all upper case letters come before all lower case letters.
+.TP
+.BR \-l ", " \-\-lexicographic
+Lexicographic sort:
+Sort filenames on ASCII sorting order.
+Compare with the default sorting order which is \[lq]natural sort\[rq],
+sometimes called \[lq]version sort\[rq].
+.TP
+.BR \-r ", " \-\-reverse
+Reverse sort:
+Number in descending sorted order.
+.TP
+.BR \-s " \f[I]num\f[R], " \-\-start= \f[I]num\f[R]
+Start number:
+Start numbering with \f[I]num\f[R].
+The default start number is 1.
+.TP
+.BR \-U ", " \-\-no-sort
+Don't sort:
+Number
+.I files
+in the order given.
+
+.SH "EXIT STATUS"
+
+.TP
+0
+Normal exit,
+even if no files were actually renamed due to OS errors.
+.TP
+1
+Error compiling \f[I]template\f[R].
+An invalid
+.I template
+string was provided.
+
+.SH EXAMPLE
+
+.RS
+\f[C]renumber set_%3d.jpg *.jpg\f[]
+.RE
+.PP
+This example, using shell globbing to find filenames,
+will rename all files matching the glob pattern *.jpg to:
+set_001.jpg, set_002.jpg, set_003.jpg, etc.

@@ -1,0 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Egg info files
+*.egg-info/
+
+# Setuptools files
+dist/
+
+# Generated files
+data/

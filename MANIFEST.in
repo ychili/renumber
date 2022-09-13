@@ -1,0 +1,4 @@
+include scripts/*.py
+
+include Makefile
+include renumber.1.in
