@@ -34,7 +34,7 @@ the number has to go somewhere.
     renumber set_%3d.jpg *.jpg
 
 This example will rename all files matching `*.jpg` to
-set_001.jpg, set_002.jpg, set_003.jpg, etc.
+set\_001.jpg, set\_002.jpg, set\_003.jpg, etc.
 Use the `--help` option to show info about further options.
 Use the `--man` option to show info about formatting directives
 for the template.
