@@ -71,7 +71,7 @@ class Template:
         self.tokens = tuple()
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.template})"
+        return f"{type(self).__name__}({self.template!r})"
 
     def compile(self, factory):
         """Use FormatterFactory object to store tokens in template."""
@@ -133,7 +133,7 @@ class FormatterFactory:
         self.mapping = mapping or self.DEFAULTS
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.mapping})"
+        return f"{type(self).__name__}({self.mapping!r})"
 
     def __call__(self, kind, *args, **kwargs):
         """
@@ -189,7 +189,7 @@ class Formatter:
     type = "<None>"
 
     def __repr__(self):
-        return f"{type(self).__name__}({self.type}, ...)"
+        return f"{type(self).__name__}({self.type!r}, ...)"
 
     def format(self, *args, **kwargs):
         raise NotImplementedError("derived class/subclass required")
