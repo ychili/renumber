@@ -91,8 +91,8 @@ class Template:
         int_types = IntPresentationType.choices()
         name_forms = NameConversionType.choices()
         token_specification = [
-            ("INTDIREC", f"%0?(?P<INTWIDTH>[0-9]+)?(?P<INTTYPE>{int_types})"),
             ("STRDIREC", f"%(?P<NAMEFORM>{name_forms})?f"),
+            ("INTDIREC", f"%0?(?P<INTWIDTH>[0-9]+)?(?P<INTTYPE>{int_types})"),
             ("LITERALPERCENT", "%%"),
             ("LITERALSTR", "[^%]+")
         ]
