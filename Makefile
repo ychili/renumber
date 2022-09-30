@@ -13,6 +13,6 @@ $(OUTDIR):
 	mkdir $(OUTDIR)
 
 clean:
-	rm data/*
+	rm -f $(OUTDIR)/*
 
 .PHONY: clean
