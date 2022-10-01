@@ -1,11 +1,11 @@
 #!/usr/bin/python3
+#
+"""Extract an attribute of a Python module and print its value"""
 
 import argparse
 import ast
 import sys
 from contextlib import nullcontext
-
-DESCRIPTION = "Extract an attribute of a Python module and print its value"
 
 
 # Code adapted from setuptools/config/expand.py
@@ -30,7 +30,7 @@ def _find_assignments(module):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser(description=DESCRIPTION)
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("attribute")
     parser.add_argument(
         "module", nargs="?",
