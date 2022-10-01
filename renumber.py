@@ -232,7 +232,7 @@ class IntFormatter(Formatter):
     def format(self, *args, **kwargs):
         # Try getting object from keyword arguments first, then from
         # positional argument. Raises IndexError on failure.
-        n = kwargs.get(self.kwarg or args[self.arg_ind])
+        n = kwargs.get(self.kwarg) or args[self.arg_ind]
         return f"{n:{self.format_spec}}"
 
 
@@ -247,7 +247,7 @@ class AlphaIntFormatter(Formatter):
     def format(self, *args, **kwargs):
         # Try getting object from keyword arguments first, then from
         # positional argument. Raises IndexError on failure.
-        n = kwargs.get(self.kwarg or args[self.arg_ind])
+        n = kwargs.get(self.kwarg) or args[self.arg_ind]
         return self.func(itoa(n - 1))
 
 
