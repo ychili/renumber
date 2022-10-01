@@ -10,9 +10,9 @@ $(OUTDIR)/renumber.1: renumber.1.in renumber.py | $(OUTDIR)
 		renumber.1.in > $(OUTDIR)/renumber.1
 
 $(OUTDIR):
-	mkdir $(OUTDIR)
+	mkdir -p $(OUTDIR)
 
 clean:
-	rm -f $(OUTDIR)/*
+	rm -rf $(OUTDIR)
 
 .PHONY: clean
