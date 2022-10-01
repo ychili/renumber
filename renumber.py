@@ -25,6 +25,7 @@ import logging
 import pathlib
 import re
 import string
+import sys
 
 __version__ = "0.5.1"
 
@@ -416,4 +417,4 @@ logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s")
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
