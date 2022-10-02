@@ -67,9 +67,12 @@ TEMPLATE_DOC = """
 class Template:
     """Store and parse string template."""
 
-    def __init__(self, template):
+    def __init__(self, template, factory=None):
         self.template = template
-        self.tokens = tuple()
+        if factory is None:
+            self.tokens = tuple()
+        else:
+            self.compile(factory)
 
     def __repr__(self):
         return f"{type(self).__name__}({self.template!r})"
@@ -116,22 +119,18 @@ class Template:
 class FormatterFactory:
     """Return instances of Formatter subclasses when called.
 
-    >>> ff = FormatterFactory()     # Default mapping is used
-    >>> template = Template(string)
-    >>> template.compile(ff)
-    >>> template.substitute(*args, **kwargs)
-
     mapping is a dictionary that Formatter objects need to interpret args and
     keyword args passed to them by Template.substitute.
     """
 
-    DEFAULTS = {
+    mapping = {
         "int": {"arg_ind": 0, "kwarg": "number"},
         "file_object": {"arg_ind": 1, "kwarg": "file"}
     }
 
     def __init__(self, mapping=None):
-        self.mapping = mapping or self.DEFAULTS
+        if mapping is not None:
+            self.mapping = mapping
 
     def __repr__(self):
         return f"{type(self).__name__}({self.mapping!r})"
@@ -298,6 +297,20 @@ class ManualAction(argparse.Action):
         parser.exit()
 
 
+def template(string, factory=FormatterFactory()):
+    """Return the default template.
+
+    >>> tmpl = template("fore_%d")
+    >>> tmpl.substitute(number=101)
+    'fore_101'
+
+    Raises ValueError for a bad template string.
+    """
+    tmpl = Template(string)
+    tmpl.compile(factory)
+    return tmpl
+
+
 def itoa(num: int) -> str:
     """Convert integer to base-26 alphabetic string.
 
@@ -373,13 +386,11 @@ def parse_cla():
 
 def main():
     args = parse_cla()
-    ff = FormatterFactory()
-    template = Template(args.template)
     try:
-        template.compile(ff)
+        tmpl = template(args.template)
     except ValueError as err:
         logging.error("unable to compile template '%s': %s",
-                      template.template,
+                      args.template,
                       err.args[0])
         return 1
 
@@ -394,7 +405,7 @@ def main():
 
     for number, file in enumerate(files, start=args.start):
         old_path = pathlib.Path(file)
-        new_name = template.substitute(number=number, file=old_path)
+        new_name = tmpl.substitute(number=number, file=old_path)
         new_path = old_path.with_name(new_name)
         if args.nono:
             print(f"rename: '{old_path}' -> '{new_path}'")
