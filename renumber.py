@@ -302,20 +302,20 @@ class ManualAction(argparse.Action):
         parser.exit()
 
 
-def template(string, factory=FormatterFactory()):
+def make_template(template, factory=FormatterFactory()):
     """Return the default template.
 
-    >>> tmpl = template("fore_%d")
+    >>> tmpl = make_template("fore_%d")
     >>> tmpl.substitute(number=101)
     'fore_101'
     >>> from pathlib import Path
-    >>> tmpl = template("newname_%d%xf")
+    >>> tmpl = make_template("newname_%d%xf")
     >>> tmpl.substitute(number=0, file=Path("oldname.jpg"))
     'newname_0.jpg'
 
     Raises ValueError for a bad template string.
     """
-    tmpl = Template(string)
+    tmpl = Template(template)
     tmpl.compile(factory)
     return tmpl
 
@@ -403,7 +403,7 @@ def parse_cla():
 def main():
     args = parse_cla()
     try:
-        tmpl = template(args.template)
+        tmpl = make_template(args.template)
     except ValueError as err:
         logging.error("unable to compile template '%s': %s",
                       args.template,
