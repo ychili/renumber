@@ -20,6 +20,7 @@
 """Rename file arguments with consecutive numbering scheme."""
 
 import argparse
+import contextlib
 import enum
 import logging
 import pathlib
@@ -124,8 +125,8 @@ class FormatterFactory:
     """
 
     mapping = {
-        "int": {"arg_ind": 0, "kwarg": "number"},
-        "file_object": {"arg_ind": 1, "kwarg": "file"}
+        "int":         {"arg_ind": 0, "kwd": "number"},
+        "file_object": {"arg_ind": 1, "kwd": "file"}
     }
 
     def __init__(self, mapping=None):
@@ -186,10 +187,9 @@ class FormatterFactory:
 
 
 class Formatter:
-    type = "<None>"
 
-    def __repr__(self):
-        return f"{type(self).__name__}({self.type!r}, ...)"
+    def __init__(self, type):
+        self.type = type
 
     def format(self, *args, **kwargs):
         raise NotImplementedError("derived class/subclass required")
@@ -198,55 +198,60 @@ class Formatter:
 class NullFormatter(Formatter):
 
     def __init__(self, type, value):
-        self.type = type
+        super().__init__(type)
         self.value = value
 
     def format(self, *args, **kwargs):
         return self.value
 
 
-class AttrFormatter(Formatter):
+class ArgFormatter(Formatter):
 
-    def __init__(self, type, name, arg_ind, kwarg):
-        self.type = type
+    def __init__(self, type, arg_ind, kwd):
+        super().__init__(type)
+        self.arg_ind = arg_ind
+        self.kwd = kwd
+
+    def retrieve(self, args, kwargs):
+        """
+        Try retrieving object from keyword arguments first, then from
+        positional argument.
+        Raises IndexError on failure.
+        """
+        with contextlib.suppress(KeyError):
+            return kwargs[self.kwd]
+        return args[self.arg_ind]
+
+
+class AttrFormatter(ArgFormatter):
+
+    def __init__(self, type, name, arg_ind, kwd):
+        super().__init__(type, arg_ind, kwd)
         self.name = name
-        self.arg_ind = arg_ind
-        self.kwarg = kwarg
 
     def format(self, *args, **kwargs):
-        # Try getting object from keyword arguments first, then from
-        # positional argument. Raises IndexError on failure.
-        return getattr(kwargs.get(self.kwarg) or args[self.arg_ind],
-                       self.name)
+        return getattr(self.retrieve(args, kwargs), self.name)
 
 
-class IntFormatter(Formatter):
+class IntFormatter(ArgFormatter):
 
-    def __init__(self, type, format_spec, arg_ind, kwarg):
-        self.type = type
+    def __init__(self, type, format_spec, arg_ind, kwd):
+        super().__init__(type, arg_ind, kwd)
         self.format_spec = format_spec
-        self.arg_ind = arg_ind
-        self.kwarg = kwarg
 
     def format(self, *args, **kwargs):
-        # Try getting object from keyword arguments first, then from
-        # positional argument. Raises IndexError on failure.
-        n = kwargs.get(self.kwarg) or args[self.arg_ind]
-        return f"{n:{self.format_spec}}"
+        number = self.retrieve(args, kwargs)
+        return f"{number:{self.format_spec}}"
 
 
-class AlphaIntFormatter(Formatter):
+class AlphaIntFormatter(ArgFormatter):
 
-    def __init__(self, type, func, arg_ind, kwarg):
-        self.type = type
+    def __init__(self, type, func, arg_ind, kwd):
+        super().__init__(type, arg_ind, kwd)
         self.func = func
-        self.arg_ind = arg_ind
-        self.kwarg = kwarg
 
     def format(self, *args, **kwargs):
-        # Try getting object from keyword arguments first, then from
-        # positional argument. Raises IndexError on failure.
-        n = kwargs.get(self.kwarg) or args[self.arg_ind]
+        n = self.retrieve(args, kwargs)
         return self.func(itoa(n - 1))
 
 
