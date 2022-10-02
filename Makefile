@@ -15,4 +15,7 @@ $(OUTDIR):
 clean:
 	rm -rf $(OUTDIR)
 
-.PHONY: clean
+test:
+	$(PYTHON) -m unittest discover
+
+.PHONY: clean test
