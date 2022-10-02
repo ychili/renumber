@@ -303,6 +303,10 @@ def template(string, factory=FormatterFactory()):
     >>> tmpl = template("fore_%d")
     >>> tmpl.substitute(number=101)
     'fore_101'
+    >>> from pathlib import Path
+    >>> tmpl = template("newname_%d%xf")
+    >>> tmpl.substitute(number=0, file=Path("oldname.jpg"))
+    'newname_0.jpg'
 
     Raises ValueError for a bad template string.
     """
@@ -314,7 +318,13 @@ def template(string, factory=FormatterFactory()):
 def itoa(num: int) -> str:
     """Convert integer to base-26 alphabetic string.
 
-    0 -> 'a', 25 -> 'z', 26 -> 'aa', etc."""
+    >>> itoa(0)
+    'a'
+    >>> itoa(25)
+    'z'
+    >>> itoa(26)
+    'aa'
+    """
     convert_string = string.ascii_lowercase
     base = len(convert_string)
     if num < base:
@@ -333,7 +343,8 @@ def atoi(s):
 def alphanum_key(s):
     """Turn a string into a list of string and number chunks.
 
-    "z23a" -> ["z", 23, "a"]
+    >>> alphanum_key("z23a")
+    ['z', 23, 'a']
     """
     return [atoi(c) for c in re.split("([0-9]+)", s)]
 
