@@ -5,7 +5,6 @@
 import argparse
 import ast
 import sys
-from contextlib import nullcontext
 
 
 # Code adapted from setuptools/config/expand.py
@@ -34,7 +33,7 @@ def build_parser():
     parser.add_argument("attribute")
     parser.add_argument(
         "module", nargs="?",
-        type=argparse.FileType(), default=nullcontext(sys.stdin),
+        type=argparse.FileType(), default=sys.stdin,
         help="filename of Python module (default: stdin)")
     return parser
 
