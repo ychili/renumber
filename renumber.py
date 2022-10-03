@@ -27,6 +27,7 @@ import pathlib
 import re
 import string
 import sys
+from typing import List, Union
 
 __version__ = "0.5.1"
 
@@ -302,7 +303,10 @@ class ManualAction(argparse.Action):
         parser.exit()
 
 
-def make_template(template, factory=FormatterFactory()):
+def make_template(
+    template: str,
+    factory: FormatterFactory = FormatterFactory()
+    ) -> Template:
     """Return the default template.
 
     >>> tmpl = make_template("fore_%d")
@@ -337,7 +341,7 @@ def itoa(num: int) -> str:
     return itoa(num // base - 1) + convert_string[num % base]
 
 
-def atoi(s):
+def atoi(s: str) -> Union[int, str]:
     """Also known as `try_int`"""
     try:
         return int(s)
@@ -345,7 +349,7 @@ def atoi(s):
         return s
 
 
-def alphanum_key(s):
+def alphanum_key(s: str) -> List[Union[int, str]]:
     """Turn a string into a list of string and number chunks.
 
     >>> alphanum_key("z23a")
