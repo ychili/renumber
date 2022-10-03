@@ -312,9 +312,8 @@ def make_template(
     >>> tmpl = make_template("fore_%d")
     >>> tmpl.substitute(number=101)
     'fore_101'
-    >>> from pathlib import Path
     >>> tmpl = make_template("newname_%d%xf")
-    >>> tmpl.substitute(number=0, file=Path("oldname.jpg"))
+    >>> tmpl.substitute(number=0, file=pathlib.Path("oldname.jpg"))
     'newname_0.jpg'
 
     Raises ValueError for a bad template string.
