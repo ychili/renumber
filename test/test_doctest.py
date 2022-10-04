@@ -4,7 +4,7 @@ import unittest
 import renumber
 
 
-def load_tests(loader, tests, ignore):
+def load_tests(unused_loader, tests, unused_ignore):
     tests.addTests(doctest.DocTestSuite(renumber))
     return tests
 
