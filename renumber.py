@@ -255,8 +255,8 @@ class AlphaIntFormatter(ArgFormatter):
         self.func = func
 
     def format(self, *args, **kwargs):
-        n = self.retrieve(args, kwargs)
-        return self.func(itoa(n - 1))
+        number = self.retrieve(args, kwargs)
+        return self.func(itoa(number - 1))
 
 
 class REChoiceEnum(enum.Enum):
@@ -264,15 +264,15 @@ class REChoiceEnum(enum.Enum):
     @classmethod
     def choices(cls) -> str:
         """String repr of enum values"""
-        return '|'.join(member.value for member in cls)
+        return "|".join(member.value for member in cls)
 
 
 class IntPresentationType(REChoiceEnum):
-    DEC = 'd'
-    HEX_LOWER = 'x'
-    HEX_UPPER = 'X'
-    ALF_LOWER = 'a'
-    ALF_UPPER = 'A'
+    DEC = "d"
+    HEX_LOWER = "x"
+    HEX_UPPER = "X"
+    ALF_LOWER = "a"
+    ALF_UPPER = "A"
 
 
 class NameConversionType(REChoiceEnum):
