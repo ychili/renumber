@@ -82,7 +82,7 @@ class Template:
     def compile(self, factory):
         """Use FormatterFactory object to store tokens in template."""
         self.tokens = tuple(self.tokenize(factory))
-        if not any(token.type == "INTDIREC" for token in self.tokens):
+        if not any(token.kind == "INTDIREC" for token in self.tokens):
             raise ValueError(
                 "template must contain at least 1 integer directive")
 
@@ -189,8 +189,8 @@ class FormatterFactory:
 
 class Formatter:
 
-    def __init__(self, type):
-        self.type = type
+    def __init__(self, kind):
+        self.kind = kind
 
     def format(self, *args, **kwargs):
         raise NotImplementedError("derived class/subclass required")
@@ -198,8 +198,8 @@ class Formatter:
 
 class NullFormatter(Formatter):
 
-    def __init__(self, type, value):
-        super().__init__(type)
+    def __init__(self, kind, value):
+        super().__init__(kind)
         self.value = value
 
     def format(self, *args, **kwargs):
@@ -208,8 +208,8 @@ class NullFormatter(Formatter):
 
 class ArgFormatter(Formatter):
 
-    def __init__(self, type, arg_ind, kwd):
-        super().__init__(type)
+    def __init__(self, kind, arg_ind, kwd):
+        super().__init__(kind)
         self.arg_ind = arg_ind
         self.kwd = kwd
 
@@ -226,8 +226,8 @@ class ArgFormatter(Formatter):
 
 class AttrFormatter(ArgFormatter):
 
-    def __init__(self, type, name, arg_ind, kwd):
-        super().__init__(type, arg_ind, kwd)
+    def __init__(self, kind, name, arg_ind, kwd):
+        super().__init__(kind, arg_ind, kwd)
         self.name = name
 
     def format(self, *args, **kwargs):
@@ -236,8 +236,8 @@ class AttrFormatter(ArgFormatter):
 
 class IntFormatter(ArgFormatter):
 
-    def __init__(self, type, format_spec, arg_ind, kwd):
-        super().__init__(type, arg_ind, kwd)
+    def __init__(self, kind, format_spec, arg_ind, kwd):
+        super().__init__(kind, arg_ind, kwd)
         self.format_spec = format_spec
 
     def format(self, *args, **kwargs):
@@ -247,8 +247,8 @@ class IntFormatter(ArgFormatter):
 
 class AlphaIntFormatter(ArgFormatter):
 
-    def __init__(self, type, func, arg_ind, kwd):
-        super().__init__(type, arg_ind, kwd)
+    def __init__(self, kind, func, arg_ind, kwd):
+        super().__init__(kind, arg_ind, kwd)
         self.func = func
 
     def format(self, *args, **kwargs):
