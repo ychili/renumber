@@ -146,15 +146,14 @@ class FormatterFactory:
         if kind.startswith("LITERAL"):
             value = kwargs.get("value") or args[0]
             return NullFormatter(kind, value)
-
-        elif kind == "INTDIREC":
+        if kind == "INTDIREC":
             int_type = kwargs.get("int_type") or args[0]
             int_width = kwargs.get("int_width")
             return self._compile_int_type(kind, int_type, int_width)
-
-        elif kind == "STRDIREC":
+        if kind == "STRDIREC":
             name_form = kwargs.get("name_form")
             return self._compile_file_type(kind, name_form or "")
+        raise ValueError
 
     def _compile_int_type(self, kind, int_type, int_width):
         """Subfunction of __call__"""
@@ -171,10 +170,11 @@ class FormatterFactory:
                 format_spec = int_type.value
             return IntFormatter(kind, format_spec, **int_args)
         # Custom integer presentation types
-        elif int_type == IntPresentationType.ALF_LOWER:
+        if int_type == IntPresentationType.ALF_LOWER:
             return AlphaIntFormatter(kind, func=str, **int_args)
-        elif int_type == IntPresentationType.ALF_UPPER:
+        if int_type == IntPresentationType.ALF_UPPER:
             return AlphaIntFormatter(kind, func=str.upper, **int_args)
+        raise ValueError
 
     def _compile_file_type(self, kind, name_form=""):
         """Subfunction of __call__"""
@@ -184,8 +184,9 @@ class FormatterFactory:
         name_form = NameConversionType(name_form)
         if name_form == NameConversionType.STEM:
             return AttrFormatter(kind, name="stem", **file_object)
-        elif name_form == NameConversionType.SUFFIX:
+        if name_form == NameConversionType.SUFFIX:
             return AttrFormatter(kind, name="suffix", **file_object)
+        raise ValueError
 
 
 class Formatter(ABC):
@@ -299,7 +300,7 @@ class ManualAction(argparse.Action):
             nargs=0,
             help=help)
 
-    def __call__(self, parser, namespace, values, option_strings=None):
+    def __call__(self, parser, namespace, values, option_string=None):
         parser.print_usage()
         print(TEMPLATE_DOC)
         parser.exit()
