@@ -27,6 +27,7 @@ import pathlib
 import re
 import string
 import sys
+from abc import ABC, abstractmethod
 from typing import List, Union
 
 __version__ = "0.5.1"
@@ -187,13 +188,14 @@ class FormatterFactory:
             return AttrFormatter(kind, name="suffix", **file_object)
 
 
-class Formatter:
+class Formatter(ABC):
 
     def __init__(self, kind):
         self.kind = kind
 
+    @abstractmethod
     def format(self, *args, **kwargs):
-        raise NotImplementedError("derived class/subclass required")
+        pass
 
 
 class NullFormatter(Formatter):
