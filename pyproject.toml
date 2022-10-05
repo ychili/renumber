@@ -1,3 +1,23 @@
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.pylint.basic]
+good-names = ["e", "s", "mo", "_"]
+
+[tool.pylint.design]
+min-public-methods = 1
+
+[tool.pylint.format]
+max-line-length = 88
+
+[tool.pylint."messages control"]
+disable = ["missing-docstring"]
+
+[tool.pylint.string]
+check-quote-consistency = true
+check-str-concat-over-line-jumps = true
+
+[tool.pylint.variables]
+# new in version 2.7.3
+allowed-redefined-builtins = ["help"]
