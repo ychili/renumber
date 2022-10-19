@@ -30,7 +30,7 @@ import sys
 from abc import ABC, abstractmethod
 from typing import List, Union
 
-__version__ = "0.5.1"
+__version__ = "0.5.2"
 
 TEMPLATE_DOC = """
     SUMMARY OF TEMPLATE STRING SYNTAX
