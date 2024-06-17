@@ -308,7 +308,7 @@ class ManualAction(argparse.Action):
 
 def make_template(
     template: str,
-    factory: FormatterFactory = FormatterFactory()
+    factory: Union[FormatterFactory, None] = None
     ) -> Template:
     """Return the default template.
 
@@ -321,6 +321,8 @@ def make_template(
 
     Raises ValueError for a bad template string.
     """
+    if factory is None:
+        factory = FormatterFactory()
     tmpl = Template(template)
     tmpl.compile(factory)
     return tmpl
