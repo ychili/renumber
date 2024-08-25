@@ -20,6 +20,16 @@ Most "downloader" programs enable you to do this,
 but if you missed that step it can be a pain to manually renumber files.
 I recommend using in conjunction with [**rename**(1p)][1].
 
+The *Perl One-Liners Guide* contains some ideas for using the
+[rename command with incrementing numbers][6].
+In brief:
+
+    # Replace the first occurrence of digits in the filename with an
+    # incrementing sequence.
+    rename 's/\d+/++$a/e' *.png
+    # Likewise with a format string:
+    rename 's/\d+/sprintf "%03d", ++$a/e' *.png
+
 The **Thunar**(1) File Manager for Xfce has a similar capability called
 ["Bulk Rename"][2] with a convenient graphical interface.
 You are however limited on where you can place the number in the new name.
@@ -27,6 +37,7 @@ The only requirement of this program’s template string is that
 the number has to go somewhere.
 
 [1]: https://metacpan.org/release/File-Rename
+[6]: https://learnbyexample.github.io/learn_perl_oneliners/perl-rename-command.html#incrementing-numbers
 [2]: https://docs.xfce.org/xfce/thunar/bulk-renamer/start
 
 # Usage
