@@ -85,7 +85,7 @@ but file extension only
 Escape sequence:
 .TP
 .B %%
-Literal '%'
+Literal percent sign, \[oq]%\[cq]
 .PP
 All other characters in
 .I template
