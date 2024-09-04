@@ -28,7 +28,7 @@ import re
 import string
 import sys
 from abc import ABC, abstractmethod
-from typing import List, Union
+from typing import List, Optional, Sequence, Union
 
 __version__ = "0.5.2"
 
@@ -362,7 +362,7 @@ def alphanum_key(s: str) -> List[Union[int, str]]:
     return [atoi(c) for c in re.split("([0-9]+)", s)]
 
 
-def parse_cla():
+def parse_cla(args: Optional[Sequence[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="will rename files using consecutive numbering scheme "
         "in sorted order")
@@ -405,7 +405,7 @@ def parse_cla():
     parser.add_argument(
         "files", nargs="+",
         help="files to renumber")
-    return parser.parse_args()
+    return parser.parse_args(args)
 
 
 def main():
