@@ -15,7 +15,10 @@ $(OUTDIR):
 clean:
 	rm -rf $(OUTDIR)
 
+fmt:
+	$(PYTHON) -m yapf --recursive --in-place .
+
 test:
 	$(PYTHON) -m unittest discover
 
-.PHONY: clean test
+.PHONY: clean fmt test

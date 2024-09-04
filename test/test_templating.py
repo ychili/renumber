@@ -95,20 +95,23 @@ class TestSubstitutionInvocation(unittest.TestCase):
 
     def test_good_kwd(self):
         self.assertEqual(self.tmpl.substitute(file=PATH, number=1),
-            "001 - oldname_xxx.jpg")
+                         "001 - oldname_xxx.jpg")
 
     def test_bad_kwd(self):
         self.assertRaises(IndexError, self.tmpl.substitute, file=PATH, none=1)
 
     def test_bad_type(self):
         self.assertRaises(ValueError,
-                          self.tmpl.substitute, number=3.14, file=PATH)
+                          self.tmpl.substitute,
+                          number=3.14,
+                          file=PATH)
         self.assertRaises(AttributeError,
-                          self.tmpl.substitute, number=1, file="PATH")
+                          self.tmpl.substitute,
+                          number=1,
+                          file="PATH")
 
 
 PATH = Path("oldname_xxx.jpg")
-
 
 if __name__ == "__main__":
     unittest.main()
