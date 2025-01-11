@@ -409,6 +409,7 @@ def parse_cla(args: Optional[Sequence[str]] = None) -> argparse.Namespace:
 
 
 def main():
+    logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s")
     args = parse_cla()
     try:
         tmpl = make_template(args.template)
@@ -446,9 +447,6 @@ def main():
         if args.verbose >= Verbosity.VERBOSE:
             print(old_path, "->", new_path)
     return 0
-
-
-logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s")
 
 
 if __name__ == "__main__":
