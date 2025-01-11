@@ -60,7 +60,7 @@ This method can be changed or sorting disabled altogether using the options.
 
 # Copyright
 
-Copyright © 2021, 2022, 2024 Dylan Maltby
+Copyright © 2021, 2022, 2024, 2025 Dylan Maltby
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the
