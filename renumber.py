@@ -2,7 +2,7 @@
 #
 # renumber.py
 #
-# Copyright 2021, 2022, 2024 Dylan Maltby
+# Copyright 2021, 2022, 2024, 2025 Dylan Maltby
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
@@ -308,7 +308,7 @@ class ManualAction(argparse.Action):
 
 def make_template(
     template: str,
-    factory: Union[FormatterFactory, None] = None
+    factory: Optional[FormatterFactory] = None
     ) -> Template:
     """Return the default template.
 
