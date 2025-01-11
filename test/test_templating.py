@@ -10,7 +10,9 @@ class TestCreation(unittest.TestCase):
         self.assertIsInstance(make_template("%d"), Template)
 
     def test_no_integer(self):
-        self.assertRaises(ValueError, make_template, "%f")
+        for example in ("%", "%%", "%%d", "%f"):
+            with self.subTest(example=example):
+                self.assertRaises(ValueError, make_template, example)
 
 
 class TestObjecthood(unittest.TestCase):
