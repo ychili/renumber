@@ -16,7 +16,7 @@ clean:
 	rm -rf $(OUTDIR)
 
 fmt:
-	$(PYTHON) -m yapf --recursive --in-place .
+	$(PYTHON) -m yapf --recursive --in-place test
 
 test:
 	$(PYTHON) -m unittest discover
