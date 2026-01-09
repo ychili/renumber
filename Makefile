@@ -21,4 +21,8 @@ fmt:
 test:
 	$(PYTHON) -m unittest discover
 
-.PHONY: clean fmt test
+tox:
+	tox -q --conf tox.ini run -- -q
+	tox -q --conf tox.legacy.ini run -- -q
+
+.PHONY: clean fmt test tox

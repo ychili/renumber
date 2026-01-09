@@ -2,7 +2,7 @@
 #
 # renumber.py
 #
-# Copyright 2021, 2022, 2024, 2025 Dylan Maltby
+# Copyright 2021, 2022, 2024, 2025, 2026 Dylan Maltby
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by the Free
