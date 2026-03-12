@@ -1,5 +1,5 @@
 import unittest
-from pathlib import Path
+from pathlib import PurePath
 
 from renumber import Template, make_template
 
@@ -113,7 +113,7 @@ class TestSubstitutionInvocation(unittest.TestCase):
                           file="PATH")
 
 
-PATH = Path("oldname_xxx.jpg")
+PATH = PurePath("oldname_xxx.jpg")
 
 if __name__ == "__main__":
     unittest.main()
