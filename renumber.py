@@ -408,9 +408,9 @@ def parse_cla(args: Optional[Sequence[str]] = None) -> argparse.Namespace:
     return parser.parse_args(args)
 
 
-def main():
+def main(argv: Optional[Sequence[str]] = None) -> int:
     logging.basicConfig(format="%(filename)s: %(levelname)s: %(message)s")
-    args = parse_cla()
+    args = parse_cla(argv)
     try:
         tmpl = make_template(args.template)
     except ValueError as err:
