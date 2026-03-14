@@ -1,7 +1,7 @@
 import unittest
 from pathlib import PurePath
 
-from renumber import Template, make_template
+from renumber import Template, TemplateCompileError, make_template
 
 
 class TestCreation(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestCreation(unittest.TestCase):
     def test_no_integer(self):
         for example in ("%", "%%", "%%d", "%f"):
             with self.subTest(example=example):
-                self.assertRaises(ValueError, make_template, example)
+                self.assertRaises(TemplateCompileError, make_template, example)
 
 
 class TestObjecthood(unittest.TestCase):
@@ -103,10 +103,12 @@ class TestSubstitutionInvocation(unittest.TestCase):
         self.assertRaises(IndexError, self.tmpl.substitute, file=PATH, none=1)
 
     def test_bad_type(self):
-        self.assertRaises(ValueError,
-                          self.tmpl.substitute,
-                          number=3.14,
-                          file=PATH)
+        self.assertRaisesRegex(
+            ValueError,
+            "Unknown format code 'd' for object of type 'float'",
+            self.tmpl.substitute,
+            number=3.14,
+            file=PATH)
         self.assertRaises(AttributeError,
                           self.tmpl.substitute,
                           number=1,

@@ -84,7 +84,7 @@ class Template:
         """Use FormatterFactory object to store tokens in template."""
         self.tokens = tuple(self.tokenize(factory))
         if not any(token.kind == "INTDIREC" for token in self.tokens):
-            raise ValueError(
+            raise TemplateCompileError(
                 "template must contain at least 1 integer directive")
 
     def substitute(self, *args, **kwargs):
@@ -285,6 +285,10 @@ class Verbosity(enum.IntEnum):
     VERBOSE = 1
 
 
+class TemplateCompileError(ValueError):
+    pass
+
+
 class ManualAction(argparse.Action):
     """Like argparse._HelpAction, print usage manual and exit."""
 
@@ -319,7 +323,7 @@ def make_template(
     >>> tmpl.substitute(number=0, file=pathlib.Path("oldname.jpg"))
     'newname_0.jpg'
 
-    Raises ValueError for a bad template string.
+    Raises TemplateCompileError for a bad template string.
     """
     if factory is None:
         factory = FormatterFactory()
@@ -413,7 +417,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parse_cla(argv)
     try:
         tmpl = make_template(args.template)
-    except ValueError as err:
+    except TemplateCompileError as err:
         logging.error("unable to compile template '%s': %s",
                       args.template,
                       err.args[0])
