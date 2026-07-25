@@ -4,6 +4,7 @@
 
 import argparse
 import ast
+import pathlib
 import sys
 
 
@@ -31,16 +32,17 @@ def _find_assignments(module):
 def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("attribute")
-    parser.add_argument(
-        "module", nargs="?",
-        type=argparse.FileType(), default=sys.stdin,
-        help="filename of Python module (default: stdin)")
+    parser.add_argument("module",
+                        nargs="?",
+                        type=pathlib.Path,
+                        default=sys.stdin,
+                        help="filename of Python module (default: stdin)")
     return parser
 
 
 def main():
     args = build_parser().parse_args()
-    with args.module as file:
+    with args.module.open() as file:
         source = file.read()
     attr = getattr_from_source(args.attribute, source, name=file.name)
     print(attr, end="")
