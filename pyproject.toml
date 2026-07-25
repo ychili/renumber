@@ -26,5 +26,4 @@ allowed-redefined-builtins = ["help"]
 ignore_patterns = [
   "renumber.py",
   "setup.py",
-  "scripts/extract_attr.py",
 ]
