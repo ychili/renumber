@@ -11,6 +11,9 @@ min-public-methods = 1
 [tool.pylint.format]
 max-line-length = 88
 
+[tool.pylint.main]
+py-version = "3.6"
+
 [tool.pylint."messages control"]
 disable = ["missing-docstring"]
 
