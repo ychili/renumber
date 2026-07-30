@@ -35,10 +35,15 @@ The **Thunar**(1) File Manager for Xfce has a similar capability called
 You are however limited on where you can place the number in the new name.
 The only requirement of this program’s template string is that
 the number has to go somewhere.
+KDE’s [Dolphin][7] file manager has its own facility for
+[renaming a batch of files][8], using a template like `New name ##`
+where the hashes are replaced with digits.
 
 [1]: https://metacpan.org/release/File-Rename
 [6]: https://learnbyexample.github.io/learn_perl_oneliners/perl-rename-command.html#incrementing-numbers
 [2]: https://docs.xfce.org/xfce/thunar/bulk-renamer/start
+[7]: https://apps.kde.org/dolphin/
+[8]: https://userbase.kde.org/Dolphin/Batch_Rename
 
 # Usage
 
