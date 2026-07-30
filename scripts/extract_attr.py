@@ -5,7 +5,6 @@
 import argparse
 import ast
 import pathlib
-import sys
 
 
 # Code adapted from setuptools/config/expand.py
@@ -33,18 +32,15 @@ def build_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("attribute")
     parser.add_argument("module",
-                        nargs="?",
                         type=pathlib.Path,
-                        default=sys.stdin,
-                        help="filename of Python module (default: stdin)")
+                        help="path to Python source file")
     return parser
 
 
 def main():
     args = build_parser().parse_args()
-    with args.module.open() as file:
-        source = file.read()
-    attr = getattr_from_source(args.attribute, source, name=file.name)
+    source = args.module.read_text(encoding="utf8")
+    attr = getattr_from_source(args.attribute, source, name=args.module)
     print(attr, end="")
 
 
