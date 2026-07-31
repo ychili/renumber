@@ -434,13 +434,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     for number, file in enumerate(files, start=args.start):
         old_path = pathlib.Path(file)
-        new_name = tmpl.substitute(number=number, file=old_path)
-        try:
-            new_path = old_path.with_name(new_name)
-        except ValueError as err:
-            logging.error("unable to use template '%s' as filename: %s",
-                          args.template, err)
-            return 1
+        new_path = pathlib.Path(tmpl.substitute(number=number, file=old_path))
         if args.nono:
             print(f"rename: '{old_path}' -> '{new_path}'")
             continue
@@ -449,7 +443,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 print(old_path, "->", "file already exists!")
             continue
         try:
-            old_path.replace(new_name)
+            old_path.replace(new_path)
         except OSError as err:
             logging.error("%s", err)
             continue

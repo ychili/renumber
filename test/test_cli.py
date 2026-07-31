@@ -55,8 +55,9 @@ class TestMain(CliTestCase):
                                "anything")
 
     def test_with_nono(self):
-        test_output = self._capture_output(["--nono", "%d", "test"])
-        self.assertEqual(test_output.splitlines(), ["rename: 'test' -> '1'"])
+        test_output = self._capture_output(["--nono", "sub/%d", "test"])
+        self.assertEqual(test_output.splitlines(),
+                         ["rename: 'test' -> 'sub/1'"])
 
 
 if __name__ == "__main__":

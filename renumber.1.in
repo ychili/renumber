@@ -28,14 +28,6 @@ according to
 .I template
 using a consecutive numbering scheme.
 By default, filenames are sorted before numbering.
-.PP
-This version of
-.B renumber
-cannot be used to move files between directories.
-.I template
-is used just for the base name component of the target path.
-Leading path components (directories) stay the same.
-As such, it cannot contain path separators (slashes).
 .
 .SS Template string syntax
 .PP
