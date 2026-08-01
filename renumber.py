@@ -198,7 +198,7 @@ class Formatter(ABC):
 
     @abstractmethod
     def format(self, *args, **kwargs):
-        pass
+        raise NotImplementedError
 
 
 class NullFormatter(Formatter):
