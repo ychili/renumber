@@ -28,7 +28,7 @@ import re
 import string
 import sys
 from abc import ABC, abstractmethod
-from typing import List, Optional, Sequence, Union
+from typing import Any, List, Optional, Sequence, Tuple, Union
 
 __version__ = "0.5.2"
 
@@ -70,6 +70,8 @@ TEMPLATE_DOC = """
 class Template:
     """Store and parse string template."""
 
+    tokens: Tuple["Formatter", ...]
+
     def __init__(self, template, factory=None):
         self.template = template
         if factory is None:
@@ -87,7 +89,7 @@ class Template:
             raise TemplateCompileError(
                 "template must contain at least 1 integer directive")
 
-    def substitute(self, *args, **kwargs):
+    def substitute(self, *args: Any, **kwargs: Any) -> str:
         """Return string with substitutions made."""
         return "".join(token.format(*args, **kwargs) for token in self.tokens)
 
