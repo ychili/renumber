@@ -60,6 +60,16 @@ class TestMainWithoutIO(TestMain):
         self.assertRaisesRegex(RuntimeError, "/dev/null", path.replace,
                                "anything")
 
+    # Patch basicConfig to keep test console clean.
+    @unittest.mock.patch("logging.basicConfig")
+    def test_template_compile_error(self, unused_patch):
+        invalid_template = "%v"
+        with self.assertLogs(level="ERROR") as log_ctx:
+            status = self.function_to_test([invalid_template, "/dev/null"])
+        self.assertGreater(status, 0)
+        self.assertTrue(
+            any(invalid_template in message for message in log_ctx.output))
+
     def test_with_nono(self):
         test_output = self._capture_output(["--nono", "sub/%d", "test"])
         self.assertEqual(test_output.splitlines(),
