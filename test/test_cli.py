@@ -2,6 +2,9 @@ import abc
 import contextlib
 import io
 import pathlib
+import random
+import re
+import tempfile
 import unittest
 import unittest.mock
 
@@ -45,9 +48,12 @@ class TestCommandLine(CliTestCase):
         self.assertIn(__version__, version_output)
 
 
-@forbid("pathlib.Path.replace")
 class TestMain(CliTestCase):
     function_to_test = staticmethod(main)
+
+
+@forbid("pathlib.Path.replace")
+class TestMainWithoutIO(TestMain):
 
     def test_test_io_protection(self):
         path = pathlib.Path("/dev/null")
@@ -58,6 +64,47 @@ class TestMain(CliTestCase):
         test_output = self._capture_output(["--nono", "sub/%d", "test"])
         self.assertEqual(test_output.splitlines(),
                          ["rename: 'test' -> 'sub/1'"])
+
+
+class TestMainWithTmpDir(TestMain):
+
+    def setUp(self):
+        # pylint: disable-next=consider-using-with
+        self._tmpdir_obj = tempfile.TemporaryDirectory(prefix=f"{self.id()}.")
+        self.tmpdir = pathlib.Path(self._tmpdir_obj.name)
+
+    def tearDown(self):
+        self._tmpdir_obj.cleanup()
+
+    def test_move_default_sort(self):
+        dir0 = self.tmpdir / "dir0"
+        dir1 = self.tmpdir / "dir1"
+        dir0.mkdir()
+        dir1.mkdir()
+        n_files = 300
+        paths_to_rename = set()
+        while len(paths_to_rename) < n_files:
+            filename = format(random.randrange(0, 0x8000))
+            file_path = dir0 / filename
+            file_path.write_text(
+                f"I was {file_path.relative_to(self.tmpdir)}\n")
+            paths_to_rename.add(str(file_path))
+        tmpl = str(dir1 / "%03d-%f")
+        status = self.function_to_test([tmpl, *paths_to_rename])
+        self.assertEqual(status, 0)
+        moved_files = sorted(dir1.iterdir())
+        self.assertEqual(len(moved_files), n_files, "files in == files out")
+        self.assertTrue(moved_files[0].match("001-*"))
+        self.assertTrue(moved_files[-1].match(f"{n_files:03d}-*"))
+        original_numbers = [
+            int(re.search(r"\d+$", path.read_text())[0])
+            for path in moved_files
+        ]
+        self.assertTrue(
+            all(a <= b
+                for a, b in zip(original_numbers, original_numbers[1:])),
+            "files renamed in sorted order",
+        )
 
 
 if __name__ == "__main__":
