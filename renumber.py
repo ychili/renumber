@@ -438,11 +438,12 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         old_path = pathlib.Path(file)
         new_path = pathlib.Path(tmpl.substitute(number=number, file=old_path))
         if args.nono:
-            print(f"rename: '{old_path}' -> '{new_path}'")
+            print(
+                f"rename: '{old_path.as_posix()}' -> '{new_path.as_posix()}'")
             continue
         if not args.force and new_path.exists():
             if args.verbose >= Verbosity.VERBOSE:
-                print(old_path, "->", "file already exists!")
+                print(old_path.as_posix(), "->", "file already exists!")
             continue
         try:
             old_path.replace(new_path)
@@ -450,7 +451,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             logging.error("%s", err)
             continue
         if args.verbose >= Verbosity.VERBOSE:
-            print(old_path, "->", new_path)
+            print(old_path.as_posix(), "->", new_path.as_posix())
     return 0
 
 
